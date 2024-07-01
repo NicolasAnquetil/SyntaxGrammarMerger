@@ -260,16 +260,15 @@ SyntaxMergerTest >> testMergeRuleAndAction [
 SyntaxMergerTest >> testSemanticAction [
 
 	| actual |
-	self ruleFile: #( 'line1' '' 'line2' '' 'line3' ).
+	self ruleFile: #( '<line1>' '' '$(<line1>) = {' '}' 'line3' ).
 
-	self assert: merger ruleFileLines peek equals: 'line1'.
+	self assert: merger ruleFileLines peek equals: '<line1>'.
 
-	actual := merger semanticAction: (OrderedCollection with: 'line1').
+	actual := merger semanticAction: (OrderedCollection with: '<line1>').
 
-	self assert: merger ruleFileLines peek equals: ''.
+	self assert: merger ruleFileLines peek equals: 'line3'.
 
-	self assert: actual size equals: 1.
-	self assert: actual anyOne equals: 'line2'
+	self assertCollection: actual asArray equals: #( '$(<line1>) = {' '}' )
 
 	
 ]

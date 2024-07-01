@@ -199,7 +199,7 @@ SyntaxMerger >> semanticAction: rule [
 	 - put #ruleFileLines right after the #rule
 	 - skip blank lines
 	 - copy the semantic action of #ruleFileLines in #mergedFile
-		(stops at next blank line)"
+		(stops at next line with only '}' )"
 
 
 	| actions |
@@ -212,8 +212,9 @@ SyntaxMerger >> semanticAction: rule [
 
 	(self isSemanticAction: ruleFileLines peek ofRule: rule)
 	ifTrue: [
-		[ ruleFileLines hasNext and: [ ruleFileLines peek trim isNotEmpty ] ]
+		[ ruleFileLines hasNext and: [ ruleFileLines peek ~= '}' ] ]
 			whileTrue: [ actions add: ruleFileLines next ].
+		actions add: ruleFileLines next
 	].
 
 	^actions
