@@ -48,7 +48,7 @@ SyntaxMergerTest >> setUp [
 	mergedFile:= dir / 'merged.semc'.
 	mergedFile createFile.
 
-	merger mergedFile: mergedFile writeStream
+	merger mergedStream: mergedFile writeStream
 ]
 
 { #category : 'tests' }
@@ -147,7 +147,7 @@ SyntaxMergerTest >> testMerge [
 	self assert: merger grammarFileLines hasNext.
 
 	merger merge.
-	merger mergedFile close.
+	merger mergedStream close.
 
 	expected := Character lf join: #('line1' 'line2' 'line3' '').
 	self assert: mergedFile contents equals: expected.
@@ -187,7 +187,7 @@ $LIST(<1:executable_program>)
 '.
 
 	merger mergeRule: '<1:executable_program>'.
-	merger mergedFile close.
+	merger mergedStream close.
 
 	expected := Character lf join: #( '<1:executable_program>'
 '		= <2:main_program> %EOL ;'
@@ -231,7 +231,7 @@ $LIST(<1:executable_program>)
 '.
 
 	merger mergeRule: '<1:executable_program>'.
-	merger mergedFile close.
+	merger mergedStream close.
 
 	expected := Character lf join: #( '<1:executable_program>'
 '		= <3:function_subprogram> %EOL ;'
@@ -250,7 +250,7 @@ SyntaxMergerTest >> testMergeRuleAndAction [
 
 	| expected |
 	merger mergeRule: #( 'line1' ) andAction: #( 'line2' 'line3').
-	merger mergedFile close.
+	merger mergedStream close.
 
 	expected := Character lf join: #('line1' '' 'line2' 'line3' '').
 	self assert: mergedFile contents equals: expected

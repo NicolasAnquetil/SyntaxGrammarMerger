@@ -1,3 +1,15 @@
+"
+A small tool to merge exisiting semantics actions in a new Syntax grammar file
+
+use like this:
+```st
+SyntaxMerger new
+	grammarFileLinesFrom: '/path/to/file-without-semantic-actions.semc' ;
+	ruleFileLinesFrom: 'path/to/file-with-semantic-actions.semc'' ;
+	mergedFilename: '/path/to/merged-file.semc' ;
+	merge.
+```
+"
 Class {
 	#name : 'SyntaxMerger',
 	#superclass : 'Object',
@@ -117,6 +129,7 @@ SyntaxMerger >> merge: ruleFileName into: grammarFileName [
 SyntaxMerger >> mergeRule: aLine [
 
 	| rule semanticAction |
+
 	rule := OrderedCollection with: aLine.
 	(aLine endsWith: ';')
 		ifFalse: [ self completeRule: rule ].
@@ -135,18 +148,24 @@ SyntaxMerger >> mergeRule: aRule andAction: semanticActions [
 ]
 
 { #category : 'accessing' }
-SyntaxMerger >> mergedFile [
-
-	^mergedStream ifNil: [ mergedStream := './mergedGrammar.semc' asFileReference ]
-]
-
-{ #category : 'accessing' }
-SyntaxMerger >> mergedFile: fileName [
+SyntaxMerger >> mergedFilename: fileName [
 
 	| file |
 	file := fileName asFileReference.
 	file ensureCreateFile.
 	mergedStream := file writeStream
+]
+
+{ #category : 'accessing' }
+SyntaxMerger >> mergedStream [
+
+	^mergedStream ifNil: [ mergedStream := './mergedGrammar.semc' asFileReference ]
+]
+
+{ #category : 'accessing' }
+SyntaxMerger >> mergedStream: aWriteStream [
+
+	mergedStream := aWriteStream
 ]
 
 { #category : 'accessing' }
