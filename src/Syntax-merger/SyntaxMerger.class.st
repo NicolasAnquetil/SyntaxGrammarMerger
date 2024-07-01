@@ -137,13 +137,16 @@ SyntaxMerger >> mergeRule: aRule andAction: semanticActions [
 { #category : 'accessing' }
 SyntaxMerger >> mergedFile [
 
-	^ mergedStream
+	^mergedStream ifNil: [ mergedStream := './mergedGrammar.semc' asFileReference ]
 ]
 
 { #category : 'accessing' }
-SyntaxMerger >> mergedFile: anObject [
+SyntaxMerger >> mergedFile: fileName [
 
-	mergedStream := anObject
+	| file |
+	file := fileName asFileReference.
+	file ensureCreateFile.
+	mergedStream := file writeStream
 ]
 
 { #category : 'accessing' }
