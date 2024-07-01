@@ -84,12 +84,16 @@ SyntaxMerger >> isSemanticAction: aLine ofRule: aRule [
 SyntaxMerger >> merge [
 
 	| line |
-	[ grammarFileLines hasNext ] whileTrue: [
-		line := grammarFileLines next.
+	[
+		[ grammarFileLines hasNext ] whileTrue: [
+			line := grammarFileLines next.
 
-		(line beginsWith: '<')
-			ifFalse: [ self writeLine: line ]
-			ifTrue: [ self mergeRule: line ] ]
+			(line beginsWith: '<')
+				ifFalse: [ self writeLine: line ]
+				ifTrue: [ self mergeRule: line ] ]
+	] ensure: [	
+		mergedStream close
+	]
 ]
 
 { #category : 'running' }
