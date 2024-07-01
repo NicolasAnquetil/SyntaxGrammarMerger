@@ -51,6 +51,22 @@ SyntaxMerger >> findRule: rule [
 	
 ]
 
+{ #category : 'running' }
+SyntaxMerger >> getSemanticAction: lineIterator [
+	"#lineIterator is positionned at the start of a semantic action
+	 copy the semantic action up to a line with only '}'"
+
+	| actions |
+	
+	actions := OrderedCollection new.
+
+	[ lineIterator hasNext and: [ lineIterator peek trim ~= '}' ] ]
+			whileTrue: [ actions add: lineIterator next ].
+	actions add: lineIterator next.
+
+	^actions
+]
+
 { #category : 'accessing' }
 SyntaxMerger >> grammarFileLines [
 
@@ -205,19 +221,20 @@ SyntaxMerger >> semanticAction: rule [
 	| actions |
 	self findRule: rule.
 
-	[ ruleFileLines hasNext and: [ ruleFileLines peek trim isEmpty ] ]
-		whileTrue: [ ruleFileLines next ].
-
-	actions := OrderedCollection new.
+	self skipEmptyLines: ruleFileLines.
 
 	(self isSemanticAction: ruleFileLines peek ofRule: rule)
-	ifTrue: [
-		[ ruleFileLines hasNext and: [ ruleFileLines peek ~= '}' ] ]
-			whileTrue: [ actions add: ruleFileLines next ].
-		actions add: ruleFileLines next
-	].
+	ifTrue: [ ^self getSemanticAction: ruleFileLines ].
 
-	^actions
+	^#()
+
+]
+
+{ #category : 'running' }
+SyntaxMerger >> skipEmptyLines: lineIterator [
+
+	[ lineIterator hasNext and: [ lineIterator peek trim isEmpty ] ]
+		whileTrue: [ lineIterator next ]
 
 ]
 

@@ -126,6 +126,22 @@ SyntaxMergerTest >> testFindRuleNotFound [
 ]
 
 { #category : 'tests' }
+SyntaxMergerTest >> testGetSemanticAction [
+
+	| source actual |
+	source := #( '$(<line1>) = {' '}' 'line3' ) iterator.
+
+	self assert: source peek equals: '$(<line1>) = {'.
+
+	actual := merger getSemanticAction: source.
+
+	self assert: source peek equals: 'line3'.
+
+	self assertCollection: actual asArray equals: #( '$(<line1>) = {' '}' )
+
+]
+
+{ #category : 'tests' }
 SyntaxMergerTest >> testIsSemanticActionOfRule [
 
 	| rule |
@@ -271,4 +287,18 @@ SyntaxMergerTest >> testSemanticAction [
 	self assertCollection: actual asArray equals: #( '$(<line1>) = {' '}' )
 
 	
+]
+
+{ #category : 'tests' }
+SyntaxMergerTest >> testSkipEmptyLines [
+
+	| source |
+	source := #( '' '' 'line3' ) iterator.
+
+	self assert: source peek equals: ''.
+
+	merger skipEmptyLines: source.
+
+	self assert: source peek equals: 'line3'.
+
 ]
