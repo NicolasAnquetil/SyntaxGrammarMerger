@@ -126,7 +126,7 @@ SyntaxMergerTest >> testFindRuleNotFound [
 ]
 
 { #category : 'tests' }
-SyntaxMergerTest >> testIsSemanticActionfRule [
+SyntaxMergerTest >> testIsSemanticActionOfRule [
 
 	| rule |
 	rule := #('<99:non-terminal>' '= blah;').
