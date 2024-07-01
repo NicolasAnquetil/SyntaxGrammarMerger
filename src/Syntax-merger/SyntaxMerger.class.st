@@ -205,6 +205,6 @@ SyntaxMerger >> semanticAction: rule [
 SyntaxMerger >> writeLine: line [
 
 	^ mergedStream
-		  << line;
+		  nextPutAll: line;
 		  lf
 ]
