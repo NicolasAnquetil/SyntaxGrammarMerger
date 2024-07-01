@@ -174,7 +174,7 @@ SyntaxMergerTest >> testMerge [
 
 { #category : 'tests' }
 SyntaxMergerTest >> testMergeRule [
-	"rule to macth is the first in ruleFile"
+	"rule to match is the first in ruleFile"
 	| expected |
 
 	self grammarRawFile: '		= <2:main_program> %EOL ;'.
@@ -219,7 +219,7 @@ $LIST(<1:executable_program>)
 
 { #category : 'tests' }
 SyntaxMergerTest >> testMergeRule2ndRule [
-	"rule to macth is the second in ruleFile"
+	"rule to match is the second in ruleFile"
 	| expected |
 
 	self grammarRawFile: '		= <3:function_subprogram> %EOL ;
