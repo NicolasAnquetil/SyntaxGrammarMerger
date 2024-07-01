@@ -302,3 +302,22 @@ SyntaxMergerTest >> testSkipEmptyLines [
 	self assert: source peek equals: 'line3'.
 
 ]
+
+{ #category : 'tests' }
+SyntaxMergerTest >> testSkipGrammarSemanticAction [
+
+	self grammarRawFile: '
+
+$LIST(<1:executable_program>)
+{
+  $LIST(<1:executable_program>) = $LIST(<2:main_program>);
+}
+
+*------------------------------------------------------------------------------
+'.
+
+	merger skipGrammarSemanticAction: #('<1:executable_program>').
+
+	self assert: merger grammarFileLines next equals: ''.
+	self assert: merger grammarFileLines next equals: '*------------------------------------------------------------------------------'.
+]

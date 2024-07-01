@@ -147,12 +147,14 @@ SyntaxMerger >> mergeRule: aLine [
 	| rule semanticAction |
 
 	rule := OrderedCollection with: aLine.
-	(aLine endsWith: ';')
+	(aLine trim endsWith: ';')
 		ifFalse: [ self completeRule: rule ].
 
 	semanticAction := self semanticAction: rule.
 
-	self mergeRule: rule andAction: semanticAction
+	self mergeRule: rule andAction: semanticAction.
+
+	semanticAction ifNotEmpty: [ self skipGrammarSemanticAction: rule ]
 ]
 
 { #category : 'running' }
@@ -235,6 +237,19 @@ SyntaxMerger >> skipEmptyLines: lineIterator [
 
 	[ lineIterator hasNext and: [ lineIterator peek trim isEmpty ] ]
 		whileTrue: [ lineIterator next ]
+
+]
+
+{ #category : 'running' }
+SyntaxMerger >> skipGrammarSemanticAction: aRule [
+	"if finds a semantic action in #grammarFileLines, skip it"
+
+	self skipEmptyLines: grammarFileLines.
+
+	(grammarFileLines hasNext and: [ self isSemanticAction: grammarFileLines peek ofRule: aRule])
+	ifTrue: [
+		self getSemanticAction: grammarFileLines
+	].
 
 ]
 
